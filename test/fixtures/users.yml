@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  user_time: 1
+  leave: 1
+
+two:
+  name: MyString
+  user_time: 1
+  leave: 1

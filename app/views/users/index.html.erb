@@ -1,0 +1,31 @@
+<h1><font color="#CC0000">Welcome To Leave Management System!</font></h1>
+<%= link_to 'Signup New User', new_user_path %>
+
+ <%= render template: "sessions/login" %>
+
+
+<h2>Users currently logged in</h2>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>User Login Time</th>
+      <th>Leave</th>
+    
+    </tr>
+  </thead> 
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        
+        <td><%= user.leave %></td>
+       
+      </tr>
+    <% end %>
+  </tbody> 
+</table>
+
+<br>
+

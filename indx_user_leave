@@ -1,0 +1,33 @@
+<h1><font color="#CC0000">Welcome To Leave Management System!</font></h1>
+<p><b><h2>Please Log In</h2></p></b>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>User time</th>
+      <th>Leave</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.user_time %></td>
+        <td><%= user.leave %></td>
+        <td><%= link_to 'Show', user %></td>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Create New User', new_user_path %>
+

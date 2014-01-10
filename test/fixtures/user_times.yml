@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_hour: 1
+  login_time: 2014-01-08 13:05:50
+  logout_time: 2014-01-08 13:05:50
+  user_id: 
+
+two:
+  user_hour: 1
+  login_time: 2014-01-08 13:05:50
+  logout_time: 2014-01-08 13:05:50
+  user_id: 

@@ -1,0 +1,22 @@
+<%= "Welcome #{@user.name}"%>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @user.name %>
+</p>
+<p>
+  <strong>User time:</strong>
+  <% a=@user.user_times.map{|e|e.login_time} %>
+  <%=a.last%>
+</p>
+
+
+<p>
+  <strong>Leave:</strong>
+  <%= @user.leave %>
+</p>
+
+  <%= button_to 'Logout' , { :action=>"logout" , :controller => "sessions" , :id => @user.id ,:login_time=>a.last} %>
+ <!-- <%#= link_to 'Back', users_path %> -->
