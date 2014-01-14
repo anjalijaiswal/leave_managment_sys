@@ -18,5 +18,5 @@
   <%= @user.leave %>
 </p>
 
-  <%= button_to 'Logout' , { :action=>"logout" , :controller => "sessions" , :id => @user.id ,:login_time=>a.last} %>
+  <%= button_to 'Logout' , { :action=>"destroy" , :controller => "sessions" , :id => @user.id ,:login_time=>a.last} %>
  <!-- <%#= link_to 'Back', users_path %> -->

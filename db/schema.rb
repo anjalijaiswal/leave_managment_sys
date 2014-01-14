@@ -14,7 +14,7 @@
 ActiveRecord::Schema.define(version: 20140108073550) do
 
   create_table "user_times", force: true do |t|
-    t.integer  "user_hour"
+    t.float    "user_hour"
     t.datetime "login_time"
     t.datetime "logout_time"
     t.integer  "user_id"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20140108073550) do
 
   create_table "users", force: true do |t|
     t.string   "name"
-    t.integer  "leave"
+    t.float    "leave"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

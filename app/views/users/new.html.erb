@@ -15,10 +15,15 @@
 
 <div class="field">
     <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.text_field :name , :maxlength=> 10 %>
   </div>
+ <div class="field">
+    
+    <%= f.hidden_field :leave , :value => 3 %>
+  </div>
+ 
  <div class="actions">
-    <%= f.submit %>
+    <%= f.submit  %>
   </div>
 <%end%>
 <br>

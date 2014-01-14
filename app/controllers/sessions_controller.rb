@@ -1,67 +1,93 @@
 class SessionsController < ApplicationController
-  
+  #logout_on_timeout true
   def new
  	
   end
   
   def update
+ 
   end 
   
   def login
  	
- 	if @user=User.find_by_name(params[:name])
- 		session[:user_id] = @user.id
- 		#@user_time=UserTime.create(:login_time=>Time.now)
- 		#@user=@user_time.user.create(:user_id=>@user.id)
- 		@user_time=UserTime.new
- 		@user_time=@user.user_times.create(:login_time=>Time.now,:user_id=>@user.id)
- 		#puts "<<<<<<<<<<<<<<<<<<<<<<<<<#{@user_time.name}>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
- 		redirect_to @user
+ 	if @user=User.find_by_name(params[:name]) 
+ 		 if session.has_key?("user_id")
+ 		 	redirect_to user_path(@user) , :notice=> "User already login"
+ 		 else
+	 		puts "user logged in"
+	 		session[:user_id]=@user.id
+	 		@user_time=UserTime.new
+	 		@user_time=@user.user_times.create(:login_time=>Time.now,:user_id=>@user.id)
+	 		#puts "<<<<<<<<<<<<<<<<<<<<<<<<<#{@user_time.name}>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+	 		redirect_to @user
+ 		 end
  	else
- 		redirect_to users_url :alert=>"Invalid User"
+ 		redirect_to users_url , :notice=>"Invalid User"
   	end
   end
 
   def logout
   	#puts ">>>>>>>>>>>>>>>>>>>>>>>>>>#{@user_time.login_time}<<<<<<<<<<<<<<<<<<<<<<<<!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  	
   	@user=User.find(params[:id])
-  	@user_time=UserTime.find_by_login_time(params[:login_time])
+  	@user_time=UserTime.find_by(:login_time=>params[:login_time])
 
   	@user_time.update(:logout_time=>Time.now)
-  	@user_time.user_hour=(@user_time.logout_time-@user_time.login_time)/1.seconds
-  	a=@user_time.user_hour/3600
-  	b=@user.leave
-  	puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#{@user_time.user_hour}>>>>>>>>>>>>>>>>>>>>>>>>>>"
   	
-  	if a <= 10 && b ==1
-  		flash.now[:error] = "You cannot logout as your leave balance is too low !"
-  		@user_time.update(:logout_time=> nil)
-  		redirect_to @user
-  	else
-  		if a <= 5 && b==3
-  			flash.now[:error] = "You cannot log out as your leave balance is just 2!"
-  			destroy
-  			
-  		else
-  			if 5 <= a <=10
+  	@user_time.user_hour=(@user_time.logout_time-@user_time.login_time)/1.minute
+  	a=@user_time.user_hour
+  	b=@user.leave
+  	puts a
+  	puts b
+
+  	case 
+  		when b>=3
+  			if 5<=a && a<10
   				b=b-0.5
+  				puts "working for 5 se jyada n 10 se kam #{@user.leave}"
+  				@user.update(:leave=>b)
+  				destroy
+  			elsif a<5
+  				b=b-1
+  				puts "working for 5 se kam #{@user.leave}"
+  				@user.update(:leave=>b)
   				destroy
   			else
-  				if a<=5
-  					b=b-1
-  					#puts "#{@user.leave}"
-  					destroy
-  				end
+  				destroy
+  			end 
+
+
+  		when 3>b && b>=2
+  			if a < 5 
+  				puts "working for 5 se kam #{@user.leave}"
+  				flash.now[:error] = "You cannot log out as your leave balance is just 2!"
+  				destroy
+  			
+  			elsif 5 <= a && a <10
+  				b=b-0.5
+  				puts "working for 5 se jyada bt 10 se kam #{@user.leave}"
+  				@user.update(:leave=>b)
+  				destroy
+  			else
+  				destroy
   			end
-  		end
-  	end	
+
+  		when 2>b && b>0
+  			if a<10
+  				puts "working for 10 se#{@user.leave}"
+  				flash.now[:notice] = "You cannot log out as your leave balance is too low (1)!"
+  			else
+  				destroy	
+ 			end 	
+  	end
+  	
 
   end
 
   def destroy
   	
-  	session[:user_id] = nil
-	
+  	#session[:user_id] = nil
+	session.delete(:user_id)
 	redirect_to users_url, :notice => "Logged out"
   end
 end

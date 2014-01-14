@@ -4,10 +4,14 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users=User.all
+    
+    @user_times=UserTime.where("date(login_time)=?", DateTime.now.to_date).where(:logout_time=>nil) # implement and unique 
+    @a=@user_times.map{|e| e.user_id}
+    @users=User.find(@a)
     # @user_times = UserTime.all
     # @users=@user_times.user.create()
-
+    #@users=@user_time.user.all
+    # @at=@user_times.map{|e| e.login_time}
   end
 
   # GET /users/1
@@ -28,6 +32,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    session.delete(:user_id)
     #@time=UserTime.new
     #@user=@user_time.user.create(:user_id=>@user.id,:login_time=>Time.now)
     #@user=@time.user_times.create(:login_time)

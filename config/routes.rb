@@ -1,7 +1,7 @@
 LeaveManagmentSys::Application.routes.draw do
   get "sessions/new"
   post "sessions/login"
-  get "sessions/destroy"
+  post "sessions/destroy"
   post "sessions/logout"
   resources :users
 
