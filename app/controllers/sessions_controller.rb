@@ -34,7 +34,7 @@ class SessionsController < ApplicationController
 
   	@user_time.update(:logout_time=>Time.now)
   	
-  	@user_time.user_hour=(@user_time.logout_time-@user_time.login_time)/1.minute
+  	@user_time.user_hour=(@user_time.logout_time-@user_time.login_time)/1.minutes
   	a=@user_time.user_hour
   	b=@user.leave
   	puts a
@@ -44,12 +44,12 @@ class SessionsController < ApplicationController
   		when b>=3
   			if 5<=a && a<10
   				b=b-0.5
-  				puts "working for 5 se jyada n 10 se kam #{@user.leave}"
+  				puts "working for 5 se jyada n 10 se kam #{@user}"
   				@user.update(:leave=>b)
   				destroy
   			elsif a<5
   				b=b-1
-  				puts "working for 5 se kam #{@user.leave}"
+  				puts "working for 5 se kam #{@user}"
   				@user.update(:leave=>b)
   				destroy
   			else
@@ -59,9 +59,9 @@ class SessionsController < ApplicationController
 
   		when 3>b && b>=2
   			if a < 5 
-  				puts "working for 5 se kam #{@user.leave}"
-  				flash.now[:error] = "You cannot log out as your leave balance is just 2!"
-  				destroy
+  				puts "working for 5 se kam #{@user}"
+  				
+  				redirect_to user_path(@user) , :notice=>"You cannot log out as your leave balance is just 2!"
   			
   			elsif 5 <= a && a <10
   				b=b-0.5
@@ -75,7 +75,8 @@ class SessionsController < ApplicationController
   		when 2>b && b>0
   			if a<10
   				puts "working for 10 se#{@user.leave}"
-  				flash.now[:notice] = "You cannot log out as your leave balance is too low (1)!"
+  				
+  				redirect_to user_path(@user) , :notice=>"You cannot log out as your leave balance too low (1)!"
   			else
   				destroy	
  			end 	

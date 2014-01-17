@@ -4,12 +4,17 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    
-    @user_times=UserTime.where("date(login_time)=?", DateTime.now.to_date).where(:logout_time=>nil) # implement and unique 
-    @a=@user_times.map{|e| e.user_id}
-    @users=User.find(@a)
+   time_range=Time.now.midnight..Time.now.end_of_day
+
+   @users=User.joins(:user_times).where(:user_times=>{:login_time=>time_range,:logout_time=>nil})
+
+    #@user_times=UserTime.where("date(login_time)=?", DateTime.now.to_date).where(:logout_time=>nil) # implement and unique 
+    #@l=@user_times.where
+     #@a=@user_times.map{|e| e.user_id}
+     #@users=User.find(@a)
+
     # @user_times = UserTime.all
-    # @users=@user_times.user.create()
+    
     #@users=@user_time.user.all
     # @at=@user_times.map{|e| e.login_time}
   end
@@ -20,7 +25,7 @@ class UsersController < ApplicationController
   end
 
   # GET /users/new
-  def new
+  def new                                                                                                   
     @user = User.new
   end
 

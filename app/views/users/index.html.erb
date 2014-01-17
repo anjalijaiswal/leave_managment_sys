@@ -21,7 +21,7 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= user.user_times.map{|e| e.login_time.localtime}%></td>
+        <td><%= user.user_times.last.login_time %></td>
         <td><%= user.leave %></td>
        
       </tr>
